@@ -12,7 +12,7 @@
     "lastResult": "SUCCESS"
   },
   "CADP_master_backend_nodejs": {
-    "lastChecked": 183,
+    "lastChecked": 184,
     "lastResult": "SUCCESS"
   },
   "cadp_notification_backend_nodejs": {
@@ -24,7 +24,7 @@
     "lastResult": "SUCCESS"
   },
   "CADP_RBAC_backend_nodejs": {
-    "lastChecked": 238,
+    "lastChecked": 240,
     "lastResult": "SUCCESS"
   },
   "Cadp_template_backend_nodejs": {
@@ -36,7 +36,7 @@
     "lastResult": "SUCCESS"
   },
   "Cadp-portal": {
-    "lastChecked": 382,
+    "lastChecked": 385,
     "lastResult": "SUCCESS"
   }
 }
