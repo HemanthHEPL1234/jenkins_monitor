@@ -36,8 +36,7 @@
     "lastResult": "SUCCESS"
   },
   "Cadp-portal": {
-    "lastNotified": 388,
-    "lastChecked": 388,
-    "lastResult": "FAILURE"
+    "lastChecked": 389,
+    "lastResult": "SUCCESS"
   }
 }
