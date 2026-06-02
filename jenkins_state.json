@@ -4,7 +4,7 @@
     "lastResult": "SUCCESS"
   },
   "CADP_Client_WS_backend": {
-    "lastChecked": 118,
+    "lastChecked": 120,
     "lastResult": "SUCCESS"
   },
   "CADP_Client_WS_Metadata_Backend_Node": {
@@ -12,7 +12,7 @@
     "lastResult": "SUCCESS"
   },
   "CADP_master_backend_nodejs": {
-    "lastChecked": 198,
+    "lastChecked": 203,
     "lastResult": "SUCCESS"
   },
   "cadp_notification_backend_nodejs": {
@@ -24,7 +24,7 @@
     "lastResult": "SUCCESS"
   },
   "CADP_RBAC_backend_nodejs": {
-    "lastChecked": 250,
+    "lastChecked": 252,
     "lastResult": "SUCCESS"
   },
   "Cadp_template_backend_nodejs": {
@@ -36,7 +36,7 @@
     "lastResult": "SUCCESS"
   },
   "Cadp-portal": {
-    "lastChecked": 395,
+    "lastChecked": 399,
     "lastResult": "SUCCESS"
   }
 }
