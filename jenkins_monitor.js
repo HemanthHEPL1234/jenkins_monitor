@@ -1,6 +1,6 @@
 /**
- * Jenkins CI/CD Failure Monitor
- * Polls all DEV jobs, detects new failures, sends email with console log.
+ * Jenkins CI/CD Monitor
+ * Polls all jobs across environments, detects new pass/fail, sends email.
  * State is persisted in jenkins_state.json (committed back to repo).
  */
 
@@ -11,13 +11,19 @@ const fs         = require('node:fs');
 const path       = require('node:path');
 
 const JENKINS_BASE  = 'jenkins.ckdigital.in';
-const JENKINS_FOLDER = '/job/CADP_AKS/job/DEV/job';
 const JENKINS_USER  = process.env.JENKINS_USER;
 const JENKINS_PASS  = process.env.JENKINS_PASS;
 const GMAIL_USER    = process.env.GMAIL_USER_PIPELINE;
 const GMAIL_PASS    = process.env.GMAIL_APP_PASSWORD_PIPELINE;
 const RECIPIENT     = 'hemanth.a@hepl.com';
 const STATE_FILE    = path.join(__dirname, 'jenkins_state.json');
+
+// Add QA/UAT here when those folders are created in Jenkins
+const ENVIRONMENTS = [
+  { name: 'DEV', folder: '/job/CADP_AKS/job/DEV/job' },
+  // { name: 'QA',  folder: '/job/CADP_AKS/job/QA/job' },
+  // { name: 'UAT', folder: '/job/CADP_AKS/job/UAT/job' },
+];
 
 const JOBS = [
   'cadp-chat-backend',
@@ -54,22 +60,23 @@ function jenkinsGet(urlPath) {
   });
 }
 
-async function getLastBuild(job) {
-  const res = await jenkinsGet(`${JENKINS_FOLDER}/${job}/lastBuild/api/json?tree=number,building,result,timestamp`);
+async function getLastBuild(folder, job) {
+  const res = await jenkinsGet(`${folder}/${job}/lastBuild/api/json?tree=number,building,result,timestamp`);
   if (res.status !== 200) return null;
   try { return JSON.parse(res.body); } catch { return null; }
 }
 
-async function getStages(job, buildNumber) {
-  const res = await jenkinsGet(`${JENKINS_FOLDER}/${job}/${buildNumber}/wfapi/describe`);
+async function getStages(folder, job, buildNumber) {
+  const res = await jenkinsGet(`${folder}/${job}/${buildNumber}/wfapi/describe`);
   if (res.status !== 200) return [];
   try { return JSON.parse(res.body).stages || []; } catch { return []; }
 }
 
-async function getConsoleText(job, buildNumber) {
-  const res = await jenkinsGet(`${JENKINS_FOLDER}/${job}/${buildNumber}/consoleText`);
+async function getConsoleText(folder, job, buildNumber) {
+  const res = await jenkinsGet(`${folder}/${job}/${buildNumber}/consoleText`);
   return res.body || '';
 }
+
 
 // ── State management ──────────────────────────────────────────────────────────
 
@@ -84,7 +91,7 @@ function saveState(state) {
 
 // ── Email ─────────────────────────────────────────────────────────────────────
 
-async function sendSuccessEmail(job, buildNumber) {
+async function sendSuccessEmail(env, job, buildNumber) {
   const transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: { user: GMAIL_USER, pass: GMAIL_PASS },
@@ -92,48 +99,53 @@ async function sendSuccessEmail(job, buildNumber) {
   await transporter.sendMail({
     from:    `"CADP Pipeline Manager" <${GMAIL_USER}>`,
     to:      RECIPIENT,
-    subject: `[Jenkins SUCCESS] ${job} #${buildNumber}`,
+    subject: `[Jenkins ${env}] [SUCCESS] ${job} #${buildNumber}`,
     html: `
     <div style="font-family:Arial,sans-serif;max-width:600px;margin:24px auto;background:#fff;border-radius:8px;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,0.1)">
       <div style="background:#166534;padding:24px 32px">
-        <h1 style="margin:0;color:#fff;font-size:20px">✅ Jenkins Build Passed</h1>
-        <p style="margin:6px 0 0;color:#bbf7d0;font-size:14px">${job} — Build #${buildNumber}</p>
+        <h1 style="margin:0;color:#fff;font-size:20px">&#9989; Jenkins Build Passed</h1>
+        <p style="margin:6px 0 0;color:#bbf7d0;font-size:14px">${job} &mdash; Build #${buildNumber} &mdash; <strong>${env}</strong></p>
       </div>
       <div style="padding:24px 32px">
         <table style="width:100%;border-collapse:collapse;font-size:14px">
-          <tr style="background:#f3f4f6"><td style="padding:10px 16px;font-weight:600;width:160px">Job</td><td style="padding:10px 16px">${job}</td></tr>
-          <tr><td style="padding:10px 16px;font-weight:600">Build #</td><td style="padding:10px 16px">${buildNumber}</td></tr>
-          <tr style="background:#f3f4f6"><td style="padding:10px 16px;font-weight:600">Result</td><td style="padding:10px 16px;color:#16a34a;font-weight:700">✅ SUCCESS</td></tr>
+          <tr style="background:#f3f4f6"><td style="padding:10px 16px;font-weight:600;width:160px">Environment</td><td style="padding:10px 16px;font-weight:700;color:#166534;">${env}</td></tr>
+          <tr><td style="padding:10px 16px;font-weight:600">Job</td><td style="padding:10px 16px">${job}</td></tr>
+          <tr style="background:#f3f4f6"><td style="padding:10px 16px;font-weight:600">Build #</td><td style="padding:10px 16px">${buildNumber}</td></tr>
+          <tr><td style="padding:10px 16px;font-weight:600">Result</td><td style="padding:10px 16px;color:#16a34a;font-weight:700">&#9989; SUCCESS</td></tr>
         </table>
       </div>
       <div style="padding:16px 32px 24px;border-top:1px solid #e5e7eb;font-size:12px;color:#9ca3af">This is an automated Jenkins build notification.</div>
     </div>`,
   });
-  console.log(`  ✅ Success email sent for ${job} #${buildNumber}`);
+  console.log(`  &#9989; Success email sent for [${env}] ${job} #${buildNumber}`);
 }
 
-async function sendFailureEmail(job, buildNumber, failedStage, consoleText) {
+async function sendFailureEmail(env, job, buildNumber, failedStage, consoleText) {
   const transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: { user: GMAIL_USER, pass: GMAIL_PASS },
   });
 
   const isImageStageFail = failedStage.toLowerCase().includes('build application image');
-  const subject = `[Jenkins FAILED] ${job} #${buildNumber} — ${failedStage}`;
+  const subject = `[Jenkins ${env}] [FAILED] ${job} #${buildNumber} &mdash; ${failedStage}`;
 
   const html = `
     <div style="font-family:Arial,sans-serif;max-width:700px;margin:24px auto;background:#fff;border-radius:8px;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,0.1)">
       <div style="background:#b91c1c;padding:24px 32px">
         <h1 style="margin:0;color:#fff;font-size:20px">❌ Jenkins Build Failed</h1>
-        <p style="margin:6px 0 0;color:#fecaca;font-size:14px">${job} — Build #${buildNumber}</p>
+        <p style="margin:6px 0 0;color:#fecaca;font-size:14px">${job} &mdash; Build #${buildNumber} &mdash; <strong>${env}</strong></p>
       </div>
       <div style="padding:24px 32px">
         <table style="width:100%;border-collapse:collapse;font-size:14px">
           <tr style="background:#f3f4f6">
-            <td style="padding:10px 16px;font-weight:600;width:160px">Job</td>
-            <td style="padding:10px 16px">${job}</td>
+            <td style="padding:10px 16px;font-weight:600;width:160px">Environment</td>
+            <td style="padding:10px 16px;font-weight:700;color:#b91c1c;">${env}</td>
           </tr>
           <tr>
+            <td style="padding:10px 16px;font-weight:600">Job</td>
+            <td style="padding:10px 16px">${job}</td>
+          </tr>
+          <tr style="background:#f3f4f6">
             <td style="padding:10px 16px;font-weight:600">Build #</td>
             <td style="padding:10px 16px">${buildNumber}</td>
           </tr>
@@ -171,43 +183,48 @@ async function sendFailureEmail(job, buildNumber, failedStage, consoleText) {
 // ── Main ──────────────────────────────────────────────────────────────────────
 
 async function main() {
-  console.log('Jenkins Monitor — checking all DEV jobs...');
-  const state   = loadState();
+  const state = loadState();
   let stateChanged = false;
 
-  for (const job of JOBS) {
-    const build = await getLastBuild(job);
-    if (!build) { console.log(`  ${job}: could not fetch`); continue; }
-    if (build.building) { console.log(`  ${job}: #${build.number} still running`); continue; }
-    if (build.result !== 'FAILURE') {
-      const lastChecked = state[job]?.lastChecked || 0;
-      if (build.number > lastChecked && build.result === 'SUCCESS') {
-        await sendSuccessEmail(job, build.number);
+  for (const { name: env, folder } of ENVIRONMENTS) {
+    console.log(`\nChecking [${env}]...`);
+
+    for (const job of JOBS) {
+      const stateKey = `${env}:${job}`;
+      const build = await getLastBuild(folder, job);
+      if (!build) { console.log(`  ${job}: could not fetch`); continue; }
+      if (build.building) { console.log(`  ${job}: #${build.number} still running`); continue; }
+
+      if (build.result !== 'FAILURE') {
+        const lastChecked = state[stateKey]?.lastChecked || 0;
+        if (build.number > lastChecked && build.result === 'SUCCESS') {
+          await sendSuccessEmail(env, job, build.number);
+        }
+        state[stateKey] = { lastChecked: build.number, lastResult: build.result };
+        stateChanged = true;
+        console.log(`  ${job}: #${build.number} ${build.result}`);
+        continue;
       }
-      state[job] = { lastChecked: build.number, lastResult: build.result };
+
+      // It's a FAILURE — check if we already notified
+      const lastNotified = state[stateKey]?.lastNotified || 0;
+      if (build.number <= lastNotified) {
+        console.log(`  ${job}: #${build.number} FAILURE (already notified)`);
+        continue;
+      }
+
+      // New failure — find which stage failed
+      console.log(`  ${job}: #${build.number} NEW FAILURE — fetching stages...`);
+      const stages      = await getStages(folder, job, build.number);
+      const failedStage = stages.find(s => s.status === 'FAILED');
+      const stageName   = failedStage?.name || 'Unknown Stage';
+      const consoleText = await getConsoleText(folder, job, build.number);
+
+      await sendFailureEmail(env, job, build.number, stageName, consoleText);
+
+      state[stateKey] = { lastNotified: build.number, lastChecked: build.number, lastResult: 'FAILURE' };
       stateChanged = true;
-      console.log(`  ${job}: #${build.number} ${build.result}`);
-      continue;
     }
-
-    // It's a FAILURE — check if we already notified for this build
-    const lastNotified = state[job]?.lastNotified || 0;
-    if (build.number <= lastNotified) {
-      console.log(`  ${job}: #${build.number} FAILURE (already notified)`);
-      continue;
-    }
-
-    // New failure — find which stage failed
-    console.log(`  ${job}: #${build.number} NEW FAILURE — fetching stages...`);
-    const stages      = await getStages(job, build.number);
-    const failedStage = stages.find(s => s.status === 'FAILED');
-    const stageName   = failedStage?.name || 'Unknown Stage';
-    const consoleText = await getConsoleText(job, build.number);
-
-    await sendFailureEmail(job, build.number, stageName, consoleText);
-
-    state[job] = { lastNotified: build.number, lastChecked: build.number, lastResult: 'FAILURE' };
-    stateChanged = true;
   }
 
   if (stateChanged) saveState(state);
