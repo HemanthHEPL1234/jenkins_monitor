@@ -18,12 +18,8 @@ const GMAIL_PASS    = process.env.GMAIL_APP_PASSWORD_PIPELINE;
 const RECIPIENT     = 'hemanth.a@hepl.com';
 const STATE_FILE    = path.join(__dirname, 'jenkins_state.json');
 
-// Add QA/UAT here when those folders are created in Jenkins
-const ENVIRONMENTS = [
-  { name: 'DEV', folder: '/job/CADP_AKS/job/DEV/job' },
-  // { name: 'QA',  folder: '/job/CADP_AKS/job/QA/job' },
-  // { name: 'UAT', folder: '/job/CADP_AKS/job/UAT/job' },
-];
+// All builds are in the DEV folder — ENV param on the build tells the actual environment
+const JENKINS_FOLDER = '/job/CADP_AKS/job/DEV/job';
 
 const JOBS = [
   'cadp-chat-backend',
@@ -48,7 +44,7 @@ function jenkinsGet(urlPath) {
       path: urlPath,
       method: 'GET',
       headers: { Authorization: `Basic ${auth}`, Accept: 'application/json' },
-      rejectUnauthorized: false,
+      rejectUnauthorized: true,
     };
     const req = https.request(options, res => {
       let data = '';
@@ -61,9 +57,20 @@ function jenkinsGet(urlPath) {
 }
 
 async function getLastBuild(folder, job) {
-  const res = await jenkinsGet(`${folder}/${job}/lastBuild/api/json?tree=number,building,result,timestamp`);
+  const res = await jenkinsGet(`${folder}/${job}/lastBuild/api/json?tree=number,building,result,timestamp,actions[parameters[name,value]]`);
   if (res.status !== 200) return null;
   try { return JSON.parse(res.body); } catch { return null; }
+}
+
+function extractEnv(build) {
+  const actions = build.actions || [];
+  for (const action of actions) {
+    const params = action.parameters || [];
+    for (const p of params) {
+      if (p.name === 'ENV' && p.value) return p.value.toUpperCase();
+    }
+  }
+  return 'DEV';
 }
 
 async function getStages(folder, job, buildNumber) {
@@ -182,49 +189,48 @@ async function sendFailureEmail(env, job, buildNumber, failedStage, consoleText)
 
 // ── Main ──────────────────────────────────────────────────────────────────────
 
+async function handleSuccess(state, stateKey, env, job, build) {
+  const lastChecked = state[stateKey]?.lastChecked || 0;
+  if (build.number > lastChecked && build.result === 'SUCCESS') {
+    await sendSuccessEmail(env, job, build.number);
+  }
+  return { lastChecked: build.number, lastResult: build.result };
+}
+
+async function handleFailure(state, stateKey, env, job, build) {
+  const lastNotified = state[stateKey]?.lastNotified || 0;
+  if (build.number <= lastNotified) {
+    console.log(`  [${env}] ${job}: #${build.number} FAILURE (already notified)`);
+    return null;
+  }
+  console.log(`  [${env}] ${job}: #${build.number} NEW FAILURE — fetching stages...`);
+  const stages      = await getStages(JENKINS_FOLDER, job, build.number);
+  const failedStage = stages.find(s => s.status === 'FAILED');
+  const stageName   = failedStage?.name || 'Unknown Stage';
+  const consoleText = await getConsoleText(JENKINS_FOLDER, job, build.number);
+  await sendFailureEmail(env, job, build.number, stageName, consoleText);
+  return { lastNotified: build.number, lastChecked: build.number, lastResult: 'FAILURE' };
+}
+
 async function main() {
+  console.log('Jenkins Monitor — checking all jobs...');
   const state = loadState();
   let stateChanged = false;
 
-  for (const { name: env, folder } of ENVIRONMENTS) {
-    console.log(`\nChecking [${env}]...`);
+  for (const job of JOBS) {
+    const build = await getLastBuild(JENKINS_FOLDER, job);
+    if (!build) { console.log(`  ${job}: could not fetch`); continue; }
+    if (build.building) { console.log(`  ${job}: #${build.number} still running`); continue; }
 
-    for (const job of JOBS) {
-      const stateKey = `${env}:${job}`;
-      const build = await getLastBuild(folder, job);
-      if (!build) { console.log(`  ${job}: could not fetch`); continue; }
-      if (build.building) { console.log(`  ${job}: #${build.number} still running`); continue; }
+    const env      = extractEnv(build);
+    const stateKey = `${env}:${job}`;
+    console.log(`  [${env}] ${job}: #${build.number} ${build.result}`);
 
-      if (build.result !== 'FAILURE') {
-        const lastChecked = state[stateKey]?.lastChecked || 0;
-        if (build.number > lastChecked && build.result === 'SUCCESS') {
-          await sendSuccessEmail(env, job, build.number);
-        }
-        state[stateKey] = { lastChecked: build.number, lastResult: build.result };
-        stateChanged = true;
-        console.log(`  ${job}: #${build.number} ${build.result}`);
-        continue;
-      }
+    const update = build.result === 'FAILURE'
+      ? await handleFailure(state, stateKey, env, job, build)
+      : await handleSuccess(state, stateKey, env, job, build);
 
-      // It's a FAILURE — check if we already notified
-      const lastNotified = state[stateKey]?.lastNotified || 0;
-      if (build.number <= lastNotified) {
-        console.log(`  ${job}: #${build.number} FAILURE (already notified)`);
-        continue;
-      }
-
-      // New failure — find which stage failed
-      console.log(`  ${job}: #${build.number} NEW FAILURE — fetching stages...`);
-      const stages      = await getStages(folder, job, build.number);
-      const failedStage = stages.find(s => s.status === 'FAILED');
-      const stageName   = failedStage?.name || 'Unknown Stage';
-      const consoleText = await getConsoleText(folder, job, build.number);
-
-      await sendFailureEmail(env, job, build.number, stageName, consoleText);
-
-      state[stateKey] = { lastNotified: build.number, lastChecked: build.number, lastResult: 'FAILURE' };
-      stateChanged = true;
-    }
+    if (update) { state[stateKey] = update; stateChanged = true; }
   }
 
   if (stateChanged) saveState(state);
