@@ -84,6 +84,34 @@ function saveState(state) {
 
 // ── Email ─────────────────────────────────────────────────────────────────────
 
+async function sendSuccessEmail(job, buildNumber) {
+  const transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: { user: GMAIL_USER, pass: GMAIL_PASS },
+  });
+  await transporter.sendMail({
+    from:    `"CADP Pipeline Manager" <${GMAIL_USER}>`,
+    to:      RECIPIENT,
+    subject: `[Jenkins SUCCESS] ${job} #${buildNumber}`,
+    html: `
+    <div style="font-family:Arial,sans-serif;max-width:600px;margin:24px auto;background:#fff;border-radius:8px;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,0.1)">
+      <div style="background:#166534;padding:24px 32px">
+        <h1 style="margin:0;color:#fff;font-size:20px">✅ Jenkins Build Passed</h1>
+        <p style="margin:6px 0 0;color:#bbf7d0;font-size:14px">${job} — Build #${buildNumber}</p>
+      </div>
+      <div style="padding:24px 32px">
+        <table style="width:100%;border-collapse:collapse;font-size:14px">
+          <tr style="background:#f3f4f6"><td style="padding:10px 16px;font-weight:600;width:160px">Job</td><td style="padding:10px 16px">${job}</td></tr>
+          <tr><td style="padding:10px 16px;font-weight:600">Build #</td><td style="padding:10px 16px">${buildNumber}</td></tr>
+          <tr style="background:#f3f4f6"><td style="padding:10px 16px;font-weight:600">Result</td><td style="padding:10px 16px;color:#16a34a;font-weight:700">✅ SUCCESS</td></tr>
+        </table>
+      </div>
+      <div style="padding:16px 32px 24px;border-top:1px solid #e5e7eb;font-size:12px;color:#9ca3af">This is an automated Jenkins build notification.</div>
+    </div>`,
+  });
+  console.log(`  ✅ Success email sent for ${job} #${buildNumber}`);
+}
+
 async function sendFailureEmail(job, buildNumber, failedStage, consoleText) {
   const transporter = nodemailer.createTransport({
     service: 'gmail',
@@ -152,11 +180,12 @@ async function main() {
     if (!build) { console.log(`  ${job}: could not fetch`); continue; }
     if (build.building) { console.log(`  ${job}: #${build.number} still running`); continue; }
     if (build.result !== 'FAILURE') {
-      // Update state for successful/aborted builds so we don't alert on old failures after a success
-      if (!state[job] || state[job].lastChecked !== build.number) {
-        state[job] = { lastChecked: build.number, lastResult: build.result };
-        stateChanged = true;
+      const lastChecked = state[job]?.lastChecked || 0;
+      if (build.number > lastChecked && build.result === 'SUCCESS') {
+        await sendSuccessEmail(job, build.number);
       }
+      state[job] = { lastChecked: build.number, lastResult: build.result };
+      stateChanged = true;
       console.log(`  ${job}: #${build.number} ${build.result}`);
       continue;
     }
