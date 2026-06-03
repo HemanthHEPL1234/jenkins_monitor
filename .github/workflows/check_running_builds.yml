@@ -1,0 +1,26 @@
+name: Jenkins Running Builds Check
+
+on:
+  workflow_dispatch:
+    inputs:
+      triggered_by:
+        description: 'Teams message that triggered this check'
+        required: false
+        default: 'Teams message'
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - run: npm install
+      - run: node check_running_builds.js
+        env:
+          JENKINS_USER:               ${{ secrets.JENKINS_USER }}
+          JENKINS_PASS:               ${{ secrets.JENKINS_PASS }}
+          GMAIL_USER_PIPELINE:        ${{ secrets.GMAIL_USER_PIPELINE }}
+          GMAIL_APP_PASSWORD_PIPELINE: ${{ secrets.GMAIL_APP_PASSWORD_PIPELINE }}
+          TRIGGERED_BY:               ${{ github.event.inputs.triggered_by }}
