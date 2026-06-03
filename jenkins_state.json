@@ -102,5 +102,10 @@
   "QA:CADP_master_backend_nodejs": {
     "lastChecked": 206,
     "lastResult": "SUCCESS"
+  },
+  "QA:Cadp-portal": {
+    "lastNotified": 402,
+    "lastChecked": 402,
+    "lastResult": "FAILURE"
   }
 }
