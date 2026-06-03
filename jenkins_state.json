@@ -104,8 +104,7 @@
     "lastResult": "SUCCESS"
   },
   "QA:Cadp-portal": {
-    "lastNotified": 402,
-    "lastChecked": 402,
-    "lastResult": "FAILURE"
+    "lastChecked": 403,
+    "lastResult": "SUCCESS"
   }
 }
