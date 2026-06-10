@@ -60,8 +60,8 @@
     "lastResult": "SUCCESS"
   },
   "DEV:CADP_platform_backend_nodejs": {
-    "lastNotified": 58,
-    "lastChecked": 58,
+    "lastNotified": 59,
+    "lastChecked": 59,
     "lastResult": "FAILURE"
   },
   "DEV:CADP_RBAC_backend_nodejs": {
