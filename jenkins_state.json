@@ -121,5 +121,9 @@
   "QA:cadp-chat-backend": {
     "lastChecked": 10,
     "lastResult": "SUCCESS"
+  },
+  "UAT:cadp-chat-backend": {
+    "lastChecked": 11,
+    "lastResult": "SUCCESS"
   }
 }
