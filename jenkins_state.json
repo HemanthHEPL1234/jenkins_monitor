@@ -124,5 +124,9 @@
   "UAT:cadp-chat-backend": {
     "lastChecked": 11,
     "lastResult": "SUCCESS"
+  },
+  "UAT:CADP_RBAC_backend_nodejs": {
+    "lastChecked": 291,
+    "lastResult": "SUCCESS"
   }
 }
