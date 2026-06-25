@@ -40,9 +40,8 @@
     "lastResult": "SUCCESS"
   },
   "DEV:cadp-chat-backend": {
-    "lastNotified": 9,
-    "lastChecked": 9,
-    "lastResult": "FAILURE"
+    "lastChecked": 14,
+    "lastResult": "SUCCESS"
   },
   "DEV:CADP_Client_WS_backend": {
     "lastChecked": 141,
