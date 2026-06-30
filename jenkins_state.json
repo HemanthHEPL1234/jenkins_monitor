@@ -104,8 +104,8 @@
     "lastResult": "SUCCESS"
   },
   "QA:Cadp-portal": {
-    "lastNotified": 588,
-    "lastChecked": 588,
+    "lastNotified": 589,
+    "lastChecked": 589,
     "lastResult": "FAILURE"
   },
   "QA:CADP_Client_WS_backend": {
