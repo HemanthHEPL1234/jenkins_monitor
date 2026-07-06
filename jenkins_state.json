@@ -127,5 +127,9 @@
   "UAT:CADP_RBAC_backend_nodejs": {
     "lastChecked": 291,
     "lastResult": "SUCCESS"
+  },
+  "UAT:CADP_Client_WS_backend": {
+    "lastChecked": 149,
+    "lastResult": "SUCCESS"
   }
 }
