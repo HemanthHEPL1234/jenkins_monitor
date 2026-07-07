@@ -151,5 +151,9 @@
   "UAT:CADP_platform_backend_nodejs": {
     "lastChecked": 77,
     "lastResult": "SUCCESS"
+  },
+  "UAT:Cadp_template_backend_nodejs": {
+    "lastChecked": 59,
+    "lastResult": "SUCCESS"
   }
 }
