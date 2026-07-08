@@ -154,11 +154,11 @@
     "lastResult": "SUCCESS"
   },
   "UAT:Cadp_template_backend_nodejs": {
-    "lastChecked": 59,
+    "lastChecked": 60,
     "lastResult": "SUCCESS"
   },
   "UAT:cadp_workflow_backend_nodejs": {
-    "lastChecked": 158,
+    "lastChecked": 160,
     "lastResult": "SUCCESS"
   }
 }
