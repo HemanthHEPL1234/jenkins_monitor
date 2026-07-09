@@ -77,8 +77,9 @@
     "lastResult": "SUCCESS"
   },
   "DEV:Cadp-portal": {
-    "lastChecked": 641,
-    "lastResult": "SUCCESS"
+    "lastNotified": 642,
+    "lastChecked": 642,
+    "lastResult": "FAILURE"
   },
   "QA:CADP_Client_WS_Metadata_Backend_Node": {
     "lastChecked": 113,
