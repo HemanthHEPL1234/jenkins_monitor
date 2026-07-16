@@ -133,8 +133,8 @@
     "lastResult": "FAILURE"
   },
   "UAT:CADP_Client_WS_backend": {
-    "lastNotified": 169,
-    "lastChecked": 169,
+    "lastNotified": 170,
+    "lastChecked": 170,
     "lastResult": "FAILURE"
   },
   "UAT:Cadp-portal": {
