@@ -124,7 +124,7 @@
     "lastResult": "SUCCESS"
   },
   "UAT:cadp-chat-backend": {
-    "lastChecked": 16,
+    "lastChecked": 23,
     "lastResult": "SUCCESS"
   },
   "UAT:CADP_RBAC_backend_nodejs": {
@@ -132,8 +132,9 @@
     "lastResult": "SUCCESS"
   },
   "UAT:CADP_Client_WS_backend": {
-    "lastChecked": 161,
-    "lastResult": "SUCCESS"
+    "lastNotified": 169,
+    "lastChecked": 169,
+    "lastResult": "FAILURE"
   },
   "UAT:Cadp-portal": {
     "lastChecked": 660,
