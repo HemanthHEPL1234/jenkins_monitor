@@ -110,8 +110,9 @@
     "lastResult": "SUCCESS"
   },
   "QA:CADP_Client_WS_backend": {
-    "lastChecked": 164,
-    "lastResult": "SUCCESS"
+    "lastNotified": 166,
+    "lastChecked": 166,
+    "lastResult": "FAILURE"
   },
   "QA:CADP_RBAC_backend_nodejs": {
     "lastChecked": 321,
