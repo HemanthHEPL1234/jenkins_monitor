@@ -64,8 +64,9 @@
     "lastResult": "SUCCESS"
   },
   "DEV:CADP_RBAC_backend_nodejs": {
-    "lastChecked": 325,
-    "lastResult": "SUCCESS"
+    "lastNotified": 327,
+    "lastChecked": 327,
+    "lastResult": "FAILURE"
   },
   "DEV:Cadp_template_backend_nodejs": {
     "lastChecked": 73,
