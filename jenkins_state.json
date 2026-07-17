@@ -81,7 +81,7 @@
     "lastResult": "FAILURE"
   },
   "QA:CADP_Client_WS_Metadata_Backend_Node": {
-    "lastChecked": 120,
+    "lastChecked": 124,
     "lastResult": "SUCCESS"
   },
   "QA:cadp_notification_backend_nodejs": {
