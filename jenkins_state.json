@@ -93,14 +93,12 @@
     "lastResult": "SUCCESS"
   },
   "QA:Cadp_template_backend_nodejs": {
-    "lastNotified": 67,
-    "lastChecked": 67,
-    "lastResult": "FAILURE"
+    "lastChecked": 70,
+    "lastResult": "SUCCESS"
   },
   "QA:cadp_workflow_backend_nodejs": {
-    "lastNotified": 165,
-    "lastChecked": 165,
-    "lastResult": "FAILURE"
+    "lastChecked": 170,
+    "lastResult": "SUCCESS"
   },
   "QA:CADP_master_backend_nodejs": {
     "lastChecked": 303,
