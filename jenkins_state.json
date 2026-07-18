@@ -150,7 +150,7 @@
     "lastResult": "FAILURE"
   },
   "UAT:CADP_platform_backend_nodejs": {
-    "lastChecked": 84,
+    "lastChecked": 86,
     "lastResult": "SUCCESS"
   },
   "UAT:Cadp_template_backend_nodejs": {
