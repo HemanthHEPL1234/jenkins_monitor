@@ -139,9 +139,8 @@
     "lastResult": "SUCCESS"
   },
   "UAT:CADP_master_backend_nodejs": {
-    "lastNotified": 319,
-    "lastChecked": 319,
-    "lastResult": "FAILURE"
+    "lastChecked": 320,
+    "lastResult": "SUCCESS"
   },
   "UAT:CADP_Client_WS_Metadata_Backend_Node": {
     "lastChecked": 127,
