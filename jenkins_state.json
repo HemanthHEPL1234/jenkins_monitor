@@ -129,8 +129,9 @@
     "lastResult": "ABORTED"
   },
   "UAT:CADP_Client_WS_backend": {
-    "lastChecked": 180,
-    "lastResult": "SUCCESS"
+    "lastNotified": 182,
+    "lastChecked": 182,
+    "lastResult": "FAILURE"
   },
   "UAT:Cadp-portal": {
     "lastChecked": 687,
