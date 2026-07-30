@@ -145,9 +145,8 @@
     "lastResult": "FAILURE"
   },
   "UAT:cadp_notification_backend_nodejs": {
-    "lastNotified": 169,
-    "lastChecked": 169,
-    "lastResult": "FAILURE"
+    "lastChecked": 170,
+    "lastResult": "SUCCESS"
   },
   "UAT:CADP_platform_backend_nodejs": {
     "lastNotified": 87,
