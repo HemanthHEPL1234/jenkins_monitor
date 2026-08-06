@@ -77,8 +77,8 @@
     "lastResult": "FAILURE"
   },
   "DEV:Cadp-portal": {
-    "lastNotified": 725,
-    "lastChecked": 725,
+    "lastNotified": 726,
+    "lastChecked": 726,
     "lastResult": "FAILURE"
   },
   "QA:CADP_Client_WS_Metadata_Backend_Node": {
