@@ -108,15 +108,16 @@
     "lastResult": "SUCCESS"
   },
   "QA:CADP_Client_WS_backend": {
-    "lastChecked": 188,
-    "lastResult": "SUCCESS"
+    "lastNotified": 195,
+    "lastChecked": 195,
+    "lastResult": "FAILURE"
   },
   "QA:CADP_RBAC_backend_nodejs": {
     "lastChecked": 354,
     "lastResult": "SUCCESS"
   },
   "QA:cadp-chat-backend": {
-    "lastChecked": 38,
+    "lastChecked": 44,
     "lastResult": "SUCCESS"
   },
   "UAT:cadp-chat-backend": {
