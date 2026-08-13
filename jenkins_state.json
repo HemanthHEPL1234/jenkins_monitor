@@ -104,9 +104,8 @@
     "lastResult": "SUCCESS"
   },
   "QA:Cadp-portal": {
-    "lastNotified": 747,
-    "lastChecked": 747,
-    "lastResult": "FAILURE"
+    "lastChecked": 748,
+    "lastResult": "SUCCESS"
   },
   "QA:CADP_Client_WS_backend": {
     "lastChecked": 198,
@@ -125,9 +124,8 @@
     "lastResult": "SUCCESS"
   },
   "UAT:CADP_RBAC_backend_nodejs": {
-    "lastNotified": 363,
-    "lastChecked": 363,
-    "lastResult": "FAILURE"
+    "lastChecked": 366,
+    "lastResult": "SUCCESS"
   },
   "UAT:CADP_Client_WS_backend": {
     "lastChecked": 192,
