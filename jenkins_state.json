@@ -124,8 +124,9 @@
     "lastResult": "SUCCESS"
   },
   "UAT:CADP_RBAC_backend_nodejs": {
-    "lastChecked": 366,
-    "lastResult": "SUCCESS"
+    "lastNotified": 368,
+    "lastChecked": 368,
+    "lastResult": "FAILURE"
   },
   "UAT:CADP_Client_WS_backend": {
     "lastChecked": 202,
@@ -137,8 +138,9 @@
     "lastResult": "FAILURE"
   },
   "UAT:CADP_master_backend_nodejs": {
-    "lastChecked": 373,
-    "lastResult": "SUCCESS"
+    "lastNotified": 375,
+    "lastChecked": 375,
+    "lastResult": "FAILURE"
   },
   "UAT:CADP_Client_WS_Metadata_Backend_Node": {
     "lastChecked": 135,
