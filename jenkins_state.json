@@ -129,7 +129,7 @@
     "lastResult": "FAILURE"
   },
   "UAT:CADP_Client_WS_backend": {
-    "lastChecked": 202,
+    "lastChecked": 204,
     "lastResult": "SUCCESS"
   },
   "UAT:Cadp-portal": {
