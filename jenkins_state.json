@@ -117,8 +117,9 @@
     "lastResult": "SUCCESS"
   },
   "QA:cadp-chat-backend": {
-    "lastChecked": 50,
-    "lastResult": "SUCCESS"
+    "lastNotified": 52,
+    "lastChecked": 52,
+    "lastResult": "FAILURE"
   },
   "UAT:cadp-chat-backend": {
     "lastChecked": 45,
