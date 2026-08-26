@@ -136,8 +136,9 @@
     "lastResult": "SUCCESS"
   },
   "UAT:CADP_master_backend_nodejs": {
-    "lastChecked": 400,
-    "lastResult": "SUCCESS"
+    "lastNotified": 402,
+    "lastChecked": 402,
+    "lastResult": "FAILURE"
   },
   "UAT:CADP_Client_WS_Metadata_Backend_Node": {
     "lastChecked": 142,
@@ -156,7 +157,8 @@
     "lastResult": "SUCCESS"
   },
   "UAT:cadp_workflow_backend_nodejs": {
-    "lastChecked": 201,
-    "lastResult": "SUCCESS"
+    "lastNotified": 203,
+    "lastChecked": 203,
+    "lastResult": "FAILURE"
   }
 }
