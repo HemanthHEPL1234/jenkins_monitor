@@ -112,8 +112,8 @@
     "lastResult": "SUCCESS"
   },
   "QA:CADP_RBAC_backend_nodejs": {
-    "lastChecked": 388,
-    "lastResult": "ABORTED"
+    "lastChecked": 389,
+    "lastResult": "SUCCESS"
   },
   "QA:cadp-chat-backend": {
     "lastChecked": 53,
