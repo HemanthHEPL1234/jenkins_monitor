@@ -52,12 +52,14 @@
     "lastResult": "SUCCESS"
   },
   "DEV:CADP_master_backend_nodejs": {
-    "lastChecked": 434,
-    "lastResult": "SUCCESS"
+    "lastNotified": 435,
+    "lastChecked": 435,
+    "lastResult": "FAILURE"
   },
   "DEV:cadp_notification_backend_nodejs": {
-    "lastChecked": 185,
-    "lastResult": "SUCCESS"
+    "lastNotified": 186,
+    "lastChecked": 186,
+    "lastResult": "FAILURE"
   },
   "DEV:CADP_platform_backend_nodejs": {
     "lastChecked": 95,
