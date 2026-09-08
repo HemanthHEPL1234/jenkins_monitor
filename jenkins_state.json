@@ -74,9 +74,8 @@
     "lastResult": "SUCCESS"
   },
   "DEV:cadp_workflow_backend_nodejs": {
-    "lastNotified": 215,
-    "lastChecked": 215,
-    "lastResult": "FAILURE"
+    "lastChecked": 216,
+    "lastResult": "SUCCESS"
   },
   "DEV:Cadp-portal": {
     "lastNotified": 854,
