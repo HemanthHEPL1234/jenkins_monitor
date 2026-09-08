@@ -159,8 +159,7 @@
     "lastResult": "SUCCESS"
   },
   "UAT:cadp_workflow_backend_nodejs": {
-    "lastNotified": 217,
-    "lastChecked": 217,
-    "lastResult": "FAILURE"
+    "lastChecked": 218,
+    "lastResult": "SUCCESS"
   }
 }
