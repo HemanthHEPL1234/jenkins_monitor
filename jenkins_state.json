@@ -100,8 +100,8 @@
     "lastResult": "SUCCESS"
   },
   "QA:CADP_master_backend_nodejs": {
-    "lastNotified": 472,
-    "lastChecked": 472,
+    "lastNotified": 473,
+    "lastChecked": 473,
     "lastResult": "FAILURE"
   },
   "QA:Cadp-portal": {
