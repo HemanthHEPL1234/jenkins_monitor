@@ -44,8 +44,8 @@
     "lastResult": "SUCCESS"
   },
   "DEV:CADP_Client_WS_backend": {
-    "lastNotified": 224,
-    "lastChecked": 224,
+    "lastNotified": 225,
+    "lastChecked": 225,
     "lastResult": "FAILURE"
   },
   "DEV:CADP_Client_WS_Metadata_Backend_Node": {
@@ -61,8 +61,8 @@
     "lastResult": "SUCCESS"
   },
   "DEV:CADP_platform_backend_nodejs": {
-    "lastNotified": 108,
-    "lastChecked": 108,
+    "lastNotified": 109,
+    "lastChecked": 109,
     "lastResult": "FAILURE"
   },
   "DEV:CADP_RBAC_backend_nodejs": {
@@ -70,17 +70,19 @@
     "lastResult": "SUCCESS"
   },
   "DEV:Cadp_template_backend_nodejs": {
-    "lastNotified": 107,
-    "lastChecked": 107,
+    "lastNotified": 108,
+    "lastChecked": 108,
     "lastResult": "FAILURE"
   },
   "DEV:cadp_workflow_backend_nodejs": {
-    "lastChecked": 226,
-    "lastResult": "SUCCESS"
+    "lastNotified": 234,
+    "lastChecked": 234,
+    "lastResult": "FAILURE"
   },
   "DEV:Cadp-portal": {
-    "lastChecked": 909,
-    "lastResult": "SUCCESS"
+    "lastNotified": 912,
+    "lastChecked": 912,
+    "lastResult": "FAILURE"
   },
   "QA:CADP_Client_WS_Metadata_Backend_Node": {
     "lastChecked": 149,
