@@ -88,11 +88,11 @@
     "lastResult": "SUCCESS"
   },
   "QA:CADP_platform_backend_nodejs": {
-    "lastChecked": 106,
+    "lastChecked": 111,
     "lastResult": "SUCCESS"
   },
   "QA:Cadp_template_backend_nodejs": {
-    "lastChecked": 105,
+    "lastChecked": 110,
     "lastResult": "SUCCESS"
   },
   "QA:cadp_workflow_backend_nodejs": {
