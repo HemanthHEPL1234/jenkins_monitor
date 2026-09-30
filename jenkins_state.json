@@ -132,8 +132,9 @@
     "lastResult": "SUCCESS"
   },
   "UAT:Cadp-portal": {
-    "lastChecked": 959,
-    "lastResult": "SUCCESS"
+    "lastNotified": 961,
+    "lastChecked": 961,
+    "lastResult": "FAILURE"
   },
   "UAT:CADP_master_backend_nodejs": {
     "lastChecked": 513,
