@@ -56,11 +56,11 @@
     "lastResult": "SUCCESS"
   },
   "DEV:cadp_notification_backend_nodejs": {
-    "lastChecked": 220,
+    "lastChecked": 221,
     "lastResult": "SUCCESS"
   },
   "DEV:CADP_platform_backend_nodejs": {
-    "lastChecked": 122,
+    "lastChecked": 126,
     "lastResult": "SUCCESS"
   },
   "DEV:CADP_RBAC_backend_nodejs": {
